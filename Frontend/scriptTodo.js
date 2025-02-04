@@ -96,7 +96,7 @@ async function editTodo() {
 
 // Function to DELETE A TODO/////////////////
 async function deleteTodo(id) {
-    const response = await fetch(url + '/id', {
+    const response = await fetch(url + '/' + id, {
         method: 'DELETE',
         credentials: 'include', // Include cookies for authentication
     });

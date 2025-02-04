@@ -161,4 +161,35 @@ router.get('/bulk', function (req, res) {
         }
     });
 });
+router.delete('/:id', userMiddleware, function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id } = req.params; // Get the todo id from the URL parameter
+        const userId = req.body.user.userId; // Assuming you have userId available via middleware
+        try {
+            const todo = yield prisma.todo.findFirst({
+                where: {
+                    id: parseInt(id),
+                }
+            });
+            if (!todo) {
+                res.status(404).json({ error: "Todo not found" });
+                return;
+            }
+            if (todo.userId !== parseInt(userId)) {
+                res.status(403).json({ error: "You are not authorized to delete this todo" });
+                return;
+            }
+            yield prisma.todo.delete({
+                where: {
+                    id: parseInt(id),
+                },
+            });
+            res.status(200).json({ message: "Todo deleted successfully" });
+        }
+        catch (e) {
+            console.error("Error deleting todo:", e);
+            res.status(500).json({ error: "Error deleting todo" });
+        }
+    });
+});
 exports.default = router;

@@ -115,7 +115,7 @@ router.delete('/:id', userMiddleware, async function(req, res) {
     const { id } = req.params;  // Get the todo id from the URL parameter
     const userId = req.body.user.userId;  // Assuming you have userId available via middleware
     try {
-        const todo = await prisma.todo.findUnique({
+        const todo = await prisma.todo.findFirst({
             where: {
                 id: parseInt(id),
             }
