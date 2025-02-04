@@ -2,15 +2,9 @@ const API_URL = 'http://localhost:3000';
 const url = `${API_URL}/todo`; 
 
 
+
 // Function to CREATE NEW TODO //////////////
 async function createTodo() {
-    function checkAuth() {
-        const token = document.cookie.split(';').find(row => row.trim().startsWith('token='));
-        console.log("Token found:", token);
-        if (!token) {
-            window.location.href = 'index.html'; 
-        }
-    }
     const title = document.getElementById('todoTitle').value;
     const description = document.getElementById('todoDescription').value;
     console.log('Cookies:', document.cookie);  // Check if the token is there
@@ -45,13 +39,6 @@ async function createTodo() {
 
 // Function to FETCH ALL TODOS //////////////////
 async function fetchTodos() {
-    function checkAuth() {
-        const token = document.cookie.split(';').find(row => row.trim().startsWith('token='));
-        console.log("Token found:", token);
-        if (!token) {
-            window.location.href = 'index.html'; 
-        }
-    }
     const response = await fetch(url + '/bulk', {
         method: 'GET',
         credentials: 'include', // Include cookies for authentication
@@ -82,13 +69,6 @@ function displayTodos(todos) {
 
 // Function to EDIT A TODO /////////////////////
 async function editTodo() {
-    function checkAuth() {
-        const token = document.cookie.split(';').find(row => row.trim().startsWith('token='));
-        console.log("Token found:", token);
-        if (!token) {
-            window.location.href = 'index.html'; 
-        }
-    }
     const id = document.getElementById('editTodoId').value;
     const title = document.getElementById('editTodoTitle').value;
     const description = document.getElementById('editTodoDescription').value;
@@ -116,13 +96,6 @@ async function editTodo() {
 
 // Function to DELETE A TODO/////////////////
 async function deleteTodo(id) {
-    function checkAuth() {
-        const token = document.cookie.split(';').find(row => row.trim().startsWith('token='));
-        console.log("Token found:", token);
-        if (!token) {
-            window.location.href = 'index.html'; 
-        }
-    }
     const response = await fetch(url + '/id', {
         method: 'DELETE',
         credentials: 'include', // Include cookies for authentication
