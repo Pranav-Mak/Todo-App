@@ -62,12 +62,10 @@ router.post('/sigin', async function(req,res){
     res.status(500).json({ error: "Error Signing In" });
     }
 });
-
 /*router.post('/logout', async function(req, res){
     res.clearCookie("token");
     res.json({
         message: "Logged Out"
     })
 })*/
-
 export default router;
