@@ -15,7 +15,6 @@ if (!JWT_SECRET) {
     process.exit(1); // Exit the application if JWT_SECRET is not found
 }
 
-
 router.use(cookieParser())
 router.use(cors({
     credentials: true,
@@ -68,13 +67,13 @@ router.post('/', userMiddleware, async function(req, res){
     }
 })
 
-/*router.put('/', userMiddleware, async function(req, res){
+router.put('/', userMiddleware, async function(req, res){
     const {id,title, description} = req.body;
     const userId= req.body.user.userId 
     try{
         const todo = await prisma.todo.update({
             where: {
-                id
+                id:parseInt(id)
             },
             data:{
                 title,
@@ -84,10 +83,25 @@ router.post('/', userMiddleware, async function(req, res){
         })
         res.status(200).json(todo)
     }catch(e){
+        console.error("Error updating todo:", e);
         res.status(500).json("Error creating todo")
     }
 })
 
+router.get('/id', async function(req,res){
+    const {id} = req.body;
+    const userId= req.body.user.userId 
+    try{
+        const todo = await prisma.todo.findFirst({
+            where: {
+                id
+            }
+        });
+        res.status(200).json(todo)
+    }catch(e){
+        res.status(500).json("Error fetching todo")
+    }
+})
 router.get('/bulk', async function(req,res){
     try{
         const todo = await prisma.todo.findMany();
@@ -97,12 +111,35 @@ router.get('/bulk', async function(req,res){
     }
 })
 
+router.delete('/:id', userMiddleware, async function(req, res) {
+    const { id } = req.params;  // Get the todo id from the URL parameter
+    const userId = req.body.user.userId;  // Assuming you have userId available via middleware
+    try {
+        const todo = await prisma.todo.findUnique({
+            where: {
+                id: parseInt(id),
+            }
+        });
+        if (!todo) {
+             res.status(404).json({ error: "Todo not found" });
+             return
+        }
+        if (todo.userId !== parseInt(userId)) {
+             res.status(403).json({ error: "You are not authorized to delete this todo" });
+             return
+        }
 
-
-*/
-
-
-
+        await prisma.todo.delete({
+            where: {
+                id: parseInt(id),
+            },
+        });
+        res.status(200).json({ message: "Todo deleted successfully" });
+    } catch (e) {
+        console.error("Error deleting todo:", e);
+        res.status(500).json({ error: "Error deleting todo" });
+    }
+});
 
 
 export default router;

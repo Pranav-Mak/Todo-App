@@ -110,36 +110,55 @@ router.post('/', userMiddleware, function (req, res) {
         }
     });
 });
-/*router.put('/', userMiddleware, async function(req, res){
-    const {id,title, description} = req.body;
-    const userId= req.body.user.userId
-    try{
-        const todo = await prisma.todo.update({
-            where: {
-                id
-            },
-            data:{
-                title,
-                description,
-                userId:parseInt(userId)
-            }
-        })
-        res.status(200).json(todo)
-    }catch(e){
-        res.status(500).json("Error creating todo")
-    }
-})
-
-router.get('/bulk', async function(req,res){
-    try{
-        const todo = await prisma.todo.findMany();
-        res.status(200).json(todo)
-    }catch(e){
-        res.status(500).json("Error fetching todo")
-    }
-})
-
-
-
-*/
+router.put('/', userMiddleware, function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id, title, description } = req.body;
+        const userId = req.body.user.userId;
+        try {
+            const todo = yield prisma.todo.update({
+                where: {
+                    id: parseInt(id)
+                },
+                data: {
+                    title,
+                    description,
+                    userId: parseInt(userId)
+                }
+            });
+            res.status(200).json(todo);
+        }
+        catch (e) {
+            console.error("Error updating todo:", e);
+            res.status(500).json("Error creating todo");
+        }
+    });
+});
+router.get('/id', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id } = req.body;
+        const userId = req.body.user.userId;
+        try {
+            const todo = yield prisma.todo.findFirst({
+                where: {
+                    id
+                }
+            });
+            res.status(200).json(todo);
+        }
+        catch (e) {
+            res.status(500).json("Error fetching todo");
+        }
+    });
+});
+router.get('/bulk', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const todo = yield prisma.todo.findMany();
+            res.status(200).json(todo);
+        }
+        catch (e) {
+            res.status(500).json("Error fetching todo");
+        }
+    });
+});
 exports.default = router;

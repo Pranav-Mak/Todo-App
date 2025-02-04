@@ -50,10 +50,3 @@ document.getElementById('signupForm').addEventListener('submit', async function 
         alert('Signup failed!');
     }
 });
-
-// Handle logout
-document.getElementById('logoutButton').addEventListener('click', async function () {
-    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC"; // Remove the JWT token
-    window.location.href = 'index.html'; // Redirect to login page
-    
-});

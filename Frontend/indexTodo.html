@@ -16,6 +16,18 @@
     <textarea id="todoDescription" placeholder="Todo description"></textarea>
     <button onclick="createTodo()">Create Todo</button>
 
+    <h2>Edit Todo</h2>
+    <input type="number" id="editTodoId" placeholder="Todo ID to edit" />
+    <input type="text" id="editTodoTitle" placeholder="New title" />
+    <textarea id="editTodoDescription" placeholder="New description"></textarea>
+    <button onclick="editTodo()">Edit Todo</button>
+
+
+    <h2>All Todos</h2>
+    <div id="todosList"></div>
+    <button onclick="fetchTodos()">See all Todo till now</button>
+    
+    
 
 
     <script src="scriptTodo.js"></script>
